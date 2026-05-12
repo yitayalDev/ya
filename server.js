@@ -106,6 +106,35 @@ app.get('/api/health', (req, res) => {
 const { checkMaintenance } = require('./middleware/maintenance');
 app.use('/api', checkMaintenance);
 
+// --- DEMO DATA INTERCEPTOR ---
+app.use('/api', (req, res, next) => {
+  const token = req.headers.authorization?.split(' ')[1];
+  if (token === 'demo_token') {
+    // Provide mock data for common dashboard endpoints
+    if (req.url.includes('/student/dashboard')) {
+      return res.json({
+        gpa: 3.85,
+        credits: 120,
+        attendance: '95%',
+        courses: [
+          { name: 'Software Engineering', grade: 'A', status: 'Completed' },
+          { name: 'Database Systems', grade: 'A-', status: 'In Progress' }
+        ]
+      });
+    }
+    if (req.url.includes('/analytics/overview')) {
+      return res.json({
+        totalStudents: 1540,
+        totalStaff: 85,
+        totalColleges: 6,
+        revenue: '$125,000'
+      });
+    }
+  }
+  next();
+});
+// -----------------------------
+
 // Mount routers
 console.log('Loading routers...');
 app.use('/api/auth', require('./routes/auth'));
