@@ -12,6 +12,17 @@ const protect = async (req, res, next) => {
       // Get token from header
       token = req.headers.authorization.split(' ')[1];
 
+      // --- DEMO MODE BYPASS ---
+      if (token === 'demo_token') {
+        req.user = {
+          _id: '000000000000000000000000',
+          name: 'Guest User',
+          role: 'SUPER_ADMIN', // Allow demo user to see everything
+        };
+        return next();
+      }
+      // ------------------------
+
       // Verify token
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
