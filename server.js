@@ -56,7 +56,7 @@ app.use((req, res, next) => {
 });
 
 // Serve static files from Flutter web build
-const webBuildPath = path.join(__dirname, '../frontend/build/web');
+const webBuildPath = path.join(__dirname, 'public');
 app.use(express.static(webBuildPath));
 
 // Serve uploaded files
