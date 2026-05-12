@@ -1,0 +1,9 @@
+node_modules/
+.env
+.env.local
+*.log
+*.err
+*.out
+uploads/materials/*
+!uploads/materials/.gitkeep
+temp/
